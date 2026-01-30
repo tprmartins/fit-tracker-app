@@ -29,7 +29,7 @@ export default function RegisterPage() {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
-        
+
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             return;
@@ -146,17 +146,6 @@ export default function RegisterPage() {
                                     required
                                 />
                             </div>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="user-type" className="text-slate-200">{t('user_type_label')}</Label>
-                            <Select value={userType} onValueChange={setUserType}>
-                                <SelectTrigger className="bg-slate-800 border-slate-700 text-white focus:ring-blue-500">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="bg-slate-800 border-slate-700 text-white">
-                                    <SelectItem value="personal">{t('user_type_personal')}</SelectItem>
-                                </SelectContent>
-                            </Select>
                         </div>
                         <Button
                             type="submit"

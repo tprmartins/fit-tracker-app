@@ -1,8 +1,8 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7111/api";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7115/api";
 
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
     const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-    
+
     const headers = {
         'Content-Type': 'application/json',
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
