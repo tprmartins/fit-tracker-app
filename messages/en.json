@@ -1,0 +1,108 @@
+{
+    "Landing": {
+        "hero": {
+            "badge": "The #1 Platform for Personal Trainers",
+            "title_start": "Transform Your",
+            "title_highlight": "Training Business",
+            "description": "Streamline your workflow, manage students effortlessly, and create data-driven workout plans that deliver results.",
+            "cta_primary": "Get Started Free",
+            "cta_secondary": "View Demo"
+        },
+        "features": {
+            "title": "Everything you need to succeed",
+            "subtitle": "Powerful tools built for modern fitness professionals.",
+            "card_1_title": "Student Management",
+            "card_1_desc": "Keep track of all your clients in one place. Monitor progress, adherence, and subscription status easily.",
+            "card_2_title": "Custom Workouts",
+            "card_2_desc": "Build personalized training plans with our intuitive workout builder.",
+            "card_3_title": "Progress Tracking",
+            "card_3_desc": "Visualize client results with beautiful charts. Track weight, body measurements, and performance gains."
+        },
+        "features_extra": {
+            "how_it_works": "How it Works",
+            "pricing": "Pricing",
+            "testimonials": "Testimonials",
+            "step_1": "Create your account",
+            "step_2": "Add your students",
+            "step_3": "Track workouts & results"
+        },
+        "nav": {
+            "signin": "Sign In",
+            "signup": "Sign Up"
+        }
+    },
+    "Auth": {
+        "login_title": "Welcome Back",
+        "login_desc": "Enter your credentials to access your account",
+        "register_title": "Create Account",
+        "register_desc": "Start your journey today",
+        "name_label": "Full Name",
+        "name_placeholder": "What should we call you?",
+        "email_label": "Email",
+        "email_placeholder": "example@fit.com",
+        "password_label": "Password",
+        "confirm_password_label": "Confirm Password",
+        "user_type_label": "I am a...",
+        "user_type_personal": "Personal Trainer",
+        "user_type_student": "Student",
+        "submit_btn": "Sign In",
+        "register_btn": "Create Account",
+        "loading_btn": "Processing...",
+        "mock_creds": "Mock Credentials:",
+        "no_account": "Don't have an account?",
+        "has_account": "Already have an account?"
+    },
+    "Dashboard": {
+        "sidebar": {
+            "dashboard": "Dashboard",
+            "students": "Students",
+            "workouts": "Workouts",
+            "overview": "Overview",
+            "my_plan": "My Plan",
+            "progress": "Progress",
+            "profile": "My Profile",
+            "sign_out": "Sign Out"
+        },
+        "header": {
+            "personal_trainer": "Personal Trainer",
+            "student": "Student"
+        }
+    },
+    "PersonalDashboard": {
+        "stats": {
+            "total_students": "Total Students",
+            "active_plans": "Active Plans",
+            "workouts_completed": "Workouts Completed",
+            "student_progress": "Student Progress"
+        },
+        "quick_actions": {
+            "title": "Quick Actions",
+            "add_student": "Add Student",
+            "create_workout": "Create Workout",
+            "send_invite": "Send Invite"
+        },
+        "recent_activity": {
+            "title": "Recent Activity",
+            "completed_workout": "completed workout",
+            "started_plan": "started plan",
+            "updated_weight": "updated weight to"
+        }
+    },
+    "WorkoutCreate": {
+        "exercises": {
+            "video_url": "Video URL (Youtube/MP4)"
+        }
+    },
+    "StudentPlan": {
+        "focus_mode": "Focus Mode"
+    },
+    "FocusMode": {
+        "title": "Focus Training",
+        "next": "Next",
+        "prev": "Previous",
+        "finish": "Finish",
+        "exit": "Exit",
+        "mark_done": "Mark Done",
+        "done": "Done"
+    }
+}

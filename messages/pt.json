@@ -1,0 +1,226 @@
+{
+    "Landing": {
+        "hero": {
+            "badge": "A plataforma #1 para Personal Trainers",
+            "title_start": "Transforme seu",
+            "title_highlight": "Negócio de Treinamento",
+            "description": "Otimize seu fluxo de trabalho, gerencie alunos sem esforço e crie planos de treino baseados em dados que geram resultados.",
+            "cta_primary": "Comece Grátis",
+            "cta_secondary": "Ver Demo"
+        },
+        "features": {
+            "title": "Tudo que você precisa para ter sucesso",
+            "subtitle": "Ferramentas poderosas para profissionais fitness modernos.",
+            "card_1_title": "Gestão de Alunos",
+            "card_1_desc": "Mantenha todos os seus clientes em um só lugar. Monitore progresso, aderência e status da assinatura facilmente.",
+            "card_2_title": "Treinos Personalizados",
+            "card_2_desc": "Construa planos de treino personalizados com nosso criador intuitivo.",
+            "card_3_title": "Acompanhamento de Progresso",
+            "card_3_desc": "Visualize os resultados dos clientes com gráficos bonitos. Monitore peso, medidas e ganhos de performance."
+        },
+        "features_extra": {
+            "how_it_works": "Como Funciona",
+            "pricing": "Planos e Preços",
+            "testimonials": "Depoimentos",
+            "step_1": "Crie sua conta",
+            "step_2": "Adicione seus alunos",
+            "step_3": "Gere treinos e resultados"
+        },
+        "nav": {
+            "signin": "Entrar",
+            "signup": "Cadastrar-se"
+        }
+    },
+    "Auth": {
+        "login_title": "Bem-vindo de volta",
+        "login_desc": "Entre com suas credenciais para acessar",
+        "register_title": "Criar Conta",
+        "register_desc": "Comece sua jornada hoje mesmo",
+        "name_label": "Nome Completo",
+        "name_placeholder": "Como quer ser chamado?",
+        "email_label": "Email",
+        "email_placeholder": "exemplo@fit.com",
+        "password_label": "Senha",
+        "confirm_password_label": "Confirmar Senha",
+        "user_type_label": "Eu sou um...",
+        "user_type_personal": "Personal Trainer",
+        "user_type_student": "Aluno",
+        "submit_btn": "Entrar",
+        "register_btn": "Criar Conta",
+        "loading_btn": "Processando...",
+        "mock_creds": "Credenciais de Teste:",
+        "no_account": "Não tem uma conta?",
+        "has_account": "Já tem uma conta?"
+    },
+    "Dashboard": {
+        "sidebar": {
+            "dashboard": "Dashboard",
+            "students": "Alunos",
+            "workouts": "Treinos",
+            "overview": "Visão Geral",
+            "my_plan": "Meu Plano",
+            "progress": "Progresso",
+            "profile": "Meu Perfil",
+            "sign_out": "Sair"
+        },
+        "header": {
+            "personal_trainer": "Personal Trainer",
+            "student": "Aluno"
+        }
+    },
+    "PersonalDashboard": {
+        "stats": {
+            "total_students": "Total de Alunos",
+            "active_plans": "Planos Ativos",
+            "workouts_completed": "Treinos Completos",
+            "student_progress": "Progresso dos Alunos"
+        },
+        "quick_actions": {
+            "title": "Ações Rápidas",
+            "add_student": "Adicionar Aluno",
+            "create_workout": "Criar Treino",
+            "send_invite": "Enviar Convite"
+        },
+        "recent_activity": {
+            "title": "Atividade Recente",
+            "completed_workout": "completou o treino",
+            "started_plan": "começou o plano",
+            "updated_weight": "atualizou o peso para"
+        }
+    },
+    "StudentDashboard": {
+        "welcome": {
+            "title": "Bem-vindo de volta, Aluno!",
+            "subtitle": "Aqui está o resumo da sua atividade.",
+            "view_workout": "Ver Treino de Hoje"
+        },
+        "stats": {
+            "workouts_done": "Treinos Feitos",
+            "total_sessions": "Sessões totais",
+            "current_streak": "Sequência Atual",
+            "keep_it_up": "Continue assim!",
+            "time_spent": "Tempo Gasto",
+            "this_month": "Este mês",
+            "next_goal": "Próxima Meta",
+            "deadlift": "Levantamento Terra"
+        },
+        "next_workout": {
+            "title": "Próximo Treino: Dia de Perna",
+            "scheduled": "Agendado para Hoje",
+            "start_btn": "Iniciar Treino"
+        }
+    },
+    "Students": {
+        "title": "Alunos",
+        "subtitle": "Gerencie seus alunos e seus planos de treino.",
+        "add_btn": "Adicionar Aluno",
+        "card_title": "Todos os Alunos",
+        "card_desc": "Uma lista de todos os seus alunos, incluindo nome, status e plano ativo.",
+        "search_placeholder": "Buscar alunos...",
+        "table": {
+            "avatar": "Avatar",
+            "name": "Nome",
+            "status": "Status",
+            "plan": "Plano Atual",
+            "last_workout": "Último Treino",
+            "actions": "Ações"
+        },
+        "actions": {
+            "label": "Ações",
+            "view_profile": "Ver Perfil",
+            "manage_workouts": "Gerenciar Treinos",
+            "send_email": "Enviar E-mail"
+        },
+        "status": {
+            "active": "Ativo",
+            "inactive": "Inativo",
+            "pending": "Aguardando Cadastro"
+        }
+    },
+    "Workouts": {
+        "title": "Treinos",
+        "subtitle": "Crie e gerencie planos de treino para seus alunos.",
+        "create_btn": "Criar Novo Plano",
+        "card": {
+            "active": "Ativo",
+            "weeks": "semanas",
+            "days_per_week": "dias/sem"
+        }
+    },
+    "WorkoutCreate": {
+        "title": "Criar Plano de Treino",
+        "tabs": {
+            "details": "Detalhes",
+            "exercises": "Exercícios",
+            "review": "Revisão"
+        },
+        "details": {
+            "plan_name": "Nome do Plano",
+            "plan_name_placeholder": "Ex: Hipertrofia Intermediária",
+            "student": "Selecionar Aluno",
+            "student_placeholder": "Selecione um aluno",
+            "duration": "Duração (Semanas)",
+            "frequency": "Frequência (Dias por Semana)"
+        },
+        "exercises": {
+            "day": "Dia",
+            "add_exercise": "Adicionar Exercício",
+            "exercise_name": "Nome do Exercício",
+            "sets": "Séries",
+            "reps": "Reps",
+            "weight": "Peso (kg)",
+            "notes": "Notas",
+            "video_url": "URL do Vídeo (Youtube/MP4)"
+        },
+        "review": {
+            "summary": "Resumo do Plano",
+            "save_btn": "Salvar Plano de Treino"
+        }
+    },
+    "Invite": {
+        "title": "Convidar Novo Aluno",
+        "subtitle": "Envie um convite por e-mail para seu novo aluno se juntar à plataforma.",
+        "name_label": "Nome do Aluno",
+        "name_placeholder": "Nome completo",
+        "email_label": "Endereço de E-mail do Aluno",
+        "email_placeholder": "aluno@exemplo.com",
+        "phone_label": "Telefone do Aluno",
+        "phone_placeholder": "(00) 00000-0000",
+        "btn": "Enviar Convite",
+        "sending": "Enviando...",
+        "success": "Convite enviado com sucesso!"
+    },
+    "Profile": {
+        "title": "Meu Perfil",
+        "subtitle": "Gerencie suas informações pessoais e configurações.",
+        "personal_info": "Informações Pessoais",
+        "name_label": "Nome Completo",
+        "bio_label": "Bio",
+        "save_btn": "Salvar Alterações"
+    },
+    "StudentPlan": {
+        "title": "Meu Plano de Treino",
+        "subtitle": "Foque na execução e acompanhe seu progresso.",
+        "complete_session": "Finalizar Sessão",
+        "rest_timer": "Timer de Descanso",
+        "focus_mode": "Modo Foco"
+    },
+    "FocusMode": {
+        "title": "Treino em Foco",
+        "next": "Próximo",
+        "prev": "Anterior",
+        "finish": "Concluir",
+        "exit": "Sair",
+        "mark_done": "Concluir",
+        "done": "Feito"
+    },
+    "StudentProgress": {
+        "title": "Meu Progresso",
+        "subtitle": "Acompanhe sua evolução física e performance.",
+        "measurements": "Medidas Corporais",
+        "chest": "Peito",
+        "waist": "Cintura",
+        "biceps": "Bíceps",
+        "thighs": "Coxas"
+    }
+}
