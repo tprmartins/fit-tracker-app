@@ -57,6 +57,8 @@
             "dashboard": "Dashboard",
             "students": "Alunos",
             "workouts": "Treinos",
+            "users": "Usuários",
+            "settings": "Configurações",
             "overview": "Visão Geral",
             "my_plan": "Meu Plano",
             "progress": "Progresso",
@@ -71,9 +73,13 @@
     "PersonalDashboard": {
         "stats": {
             "total_students": "Total de Alunos",
+            "sub_total_students": "+{count} desde o mês passado",
             "active_plans": "Planos Ativos",
+            "sub_active_plans": "{percent}% do total de alunos",
             "workouts_completed": "Treinos Completos",
-            "student_progress": "Progresso dos Alunos"
+            "sub_workouts_completed": "Esta semana",
+            "student_progress": "Progresso dos Alunos",
+            "sub_student_progress": "Ganho médio de força"
         },
         "quick_actions": {
             "title": "Ações Rápidas",
@@ -83,9 +89,13 @@
         },
         "recent_activity": {
             "title": "Atividade Recente",
-            "completed_workout": "completou o treino",
+            "completed_workout": "finalizou o treino {name}",
             "started_plan": "começou o plano",
-            "updated_weight": "atualizou o peso para"
+            "updated_weight": "atualizou o peso para",
+            "time_now": "Agora",
+            "time_ago": "há {count}h",
+            "invited_student": "Convidou o aluno {name}",
+            "created_plan": "criou o plano {name}"
         }
     },
     "StudentDashboard": {
@@ -214,13 +224,75 @@
         "mark_done": "Concluir",
         "done": "Feito"
     },
-    "StudentProgress": {
+    "CompleteRegistration": {
+        "title": "Completar Cadastro",
+        "subtitle": "Defina suas credenciais de acesso para começar",
+        "password_mismatch": "Senhas não conferem",
+        "token_error": "Token de convite não encontrado ou inválido.",
+        "submit_error": "Falha ao completar cadastro",
+        "success_title": "Cadastro Concluído!",
+        "success_desc": "Seu perfil foi ativado com sucesso. Agora você já pode acessar a plataforma.",
+        "go_to_login": "Ir para Login",
+        "submit_btn": "Finalizar Cadastro",
+        "help_text": "Precisa de ajuda? Entre em contato com seu Personal."
+    },
+    "WorkoutWizard": {
+        "continue": "Continuar",
+        "back": "Voltar",
+        "save_success": "Treino criado com sucesso!",
+        "save_error": "Ocorreu um erro ao salvar o treino.",
+        "details_desc": "Defina as informações básicas do plano.",
+        "exercises_desc": "Adicione os exercícios por dia de treino.",
+        "exercises_day_title": "Treino",
+        "review_desc": "Revise as informações antes de salvar.",
+        "no_student": "Nenhum aluno encontrado",
+        "labels": {
+            "student": "Aluno",
+            "duration": "Duração",
+            "frequency": "Frequência",
+            "total_exercises": "Total de Exercícios"
+        }
+    },
+    "ClientProgress": {
         "title": "Meu Progresso",
         "subtitle": "Acompanhe sua evolução física e performance.",
         "measurements": "Medidas Corporais",
         "chest": "Peito",
         "waist": "Cintura",
         "biceps": "Bíceps",
-        "thighs": "Coxas"
+        "thighs": "Coxas",
+        "weight": "Peso",
+        "height": "Altura"
+    },
+    "Footer": {
+        "privacy": "Privacidade",
+        "terms": "Termos",
+        "contact": "Contato",
+        "rights": "Todos os direitos reservados."
+    },
+    "Common": {
+        "pro_badge": "PRO",
+        "user_name_placeholder": "Usuário"
+    },
+    "AdminDashboard": {
+        "title": "Painel Administrativo",
+        "stats": {
+            "total_users": "Total de Usuários",
+            "active_users": "Usuários Ativos",
+            "blocked_users": "Usuários Bloqueados",
+            "total_personals": "Total de Personals",
+            "total_students": "Total de Alunos",
+            "total_workouts": "Total de Treinos"
+        },
+        "users": {
+            "title": "Gestão de Usuários",
+            "subtitle": "Visualize e gerencie todos os usuários do sistema.",
+            "block_user": "Bloquear Usuário",
+            "unblock_user": "Desbloquear Usuário",
+            "block_confirm": "Tem certeza que deseja bloquear este usuário?",
+            "unblock_confirm": "Tem certeza que deseja desbloquear este usuário?",
+            "status_active": "Ativo",
+            "status_blocked": "Bloqueado"
+        }
     }
 }

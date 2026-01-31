@@ -1,63 +1,51 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dumbbell, Clock, Timer, CheckCircle2, Maximize2, Trophy } from "lucide-react";
+import { Dumbbell, Clock, Timer, CheckCircle2, Maximize2, Trophy, Loader2, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FocusMode } from "@/components/focus-mode";
 import Link from "next/link";
+import { api } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export default function StudentPlanPage() {
     const t = useTranslations('StudentPlan');
+    const [workouts, setWorkouts] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [completedExercises, setCompletedExercises] = useState<number[]>([]);
     const [isFocusModeOpen, setIsFocusModeOpen] = useState(false);
     const [isWorkoutFinished, setIsWorkoutFinished] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const MOCK_EXERCISES = [
-        { 
-            id: 1, 
-            name: "Agachamento Livre", 
-            sets: "4 séries", 
-            reps: "12 repetições", 
-            weight: "80kg",
-            videoUrl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" 
-        },
-        { 
-            id: 2, 
-            name: "Leg Press 45°", 
-            sets: "3 séries", 
-            reps: "15 repetições", 
-            weight: "200kg",
-            videoUrl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-        },
-        { 
-            id: 3, 
-            name: "Extensora", 
-            sets: "3 séries", 
-            reps: "12 repetições", 
-            weight: "45kg",
-            videoUrl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
-        },
-        { 
-            id: 4, 
-            name: "Flexora Deitado", 
-            sets: "3 séries", 
-            reps: "12 repetições", 
-            weight: "35kg",
-            videoUrl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
-        },
-        { 
-            id: 5, 
-            name: "Panturrilha Sentado", 
-            sets: "4 séries", 
-            reps: "15 repetições", 
-            weight: "50kg",
-            videoUrl: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
-        },
-    ];
+    const { user: authUser } = useAuth();
+
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+            if (!authUser?.id) return;
+
+            try {
+                const response = await api.get(`/workout/student/${authUser.id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setWorkouts(data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch workouts", err);
+                toast.error("Erro ao carregar treinos");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchWorkouts();
+    }, [authUser]);
+
+    const activeWorkout = workouts.length > 0 ? workouts[0] : null;
+    const exercises = activeWorkout?.workoutDays?.[0]?.exercises || [];
 
     const toggleExercise = (id: number) => {
         setCompletedExercises(prev =>
@@ -65,7 +53,55 @@ export default function StudentPlanPage() {
         );
     };
 
-    const isAllCompleted = completedExercises.length === MOCK_EXERCISES.length;
+    const isAllCompleted = exercises.length > 0 && completedExercises.length === exercises.length;
+
+    const handleFinishSession = async () => {
+        if (!activeWorkout) return;
+
+        setIsSubmitting(true);
+        try {
+            const response = await api.post("/workout/execute", {
+                workoutId: activeWorkout.id
+            });
+
+            if (response.ok) {
+                setIsWorkoutFinished(true);
+                toast.success("Treino finalizado com sucesso!");
+            } else {
+                toast.error("Erro ao finalizar treino");
+            }
+        } catch (err) {
+            console.error("Failed to execute workout", err);
+            toast.error("Erro ao conectar com o servidor");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center">
+                <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+            </div>
+        );
+    }
+
+    if (!activeWorkout) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4 px-4">
+                <div className="bg-slate-100 dark:bg-slate-900 p-6 rounded-full">
+                    <Dumbbell className="h-12 w-12 text-slate-400" />
+                </div>
+                <div className="space-y-1">
+                    <h2 className="text-2xl font-bold">Sem Treino Ativo</h2>
+                    <p className="text-muted-foreground">Você ainda não possui um plano de treino atribuído pelo seu Personal.</p>
+                </div>
+                <Link href="/student">
+                    <Button variant="outline">Voltar ao Painel</Button>
+                </Link>
+            </div>
+        );
+    }
 
     if (isWorkoutFinished) {
         return (
@@ -82,22 +118,32 @@ export default function StudentPlanPage() {
                     <Link href="/student" className="w-full">
                         <Button variant="outline" className="w-full h-12">Voltar ao Início</Button>
                     </Link>
-                    <Button onClick={() => setIsWorkoutFinished(false)} className="w-full h-12 bg-blue-600 hover:bg-blue-700">Refazer Treino</Button>
+                    <Button onClick={() => {
+                        setIsWorkoutFinished(false);
+                        setCompletedExercises([]);
+                    }} className="w-full h-12 bg-blue-600 hover:bg-blue-700">Refazer Treino</Button>
                 </div>
             </div>
         );
     }
 
+    const formattedExercises = exercises.map((ex: any) => ({
+        ...ex,
+        id: ex.id || Math.random(), // Fallback if id is missing in response
+        sets: `${ex.sets} séries`,
+        reps: `${ex.reps} reps`,
+    }));
+
     return (
         <div className="max-w-4xl mx-auto space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">{t('title')}</h2>
-                    <p className="text-muted-foreground">{t('subtitle')}</p>
+                    <h2 className="text-3xl font-bold tracking-tight">{activeWorkout.name}</h2>
+                    <p className="text-muted-foreground">{activeWorkout.description || t('subtitle')}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    <Button 
-                        variant="secondary" 
+                    <Button
+                        variant="secondary"
                         className="gap-2 md:hidden bg-blue-600 text-white hover:bg-blue-700 font-bold flex-1 xs:flex-none h-11"
                         onClick={() => setIsFocusModeOpen(true)}
                     >
@@ -106,25 +152,30 @@ export default function StudentPlanPage() {
                     <Button variant="outline" className="gap-2 flex-1 xs:flex-none h-11">
                         <Timer className="h-4 w-4" /> {t('rest_timer')}
                     </Button>
-                    <Button 
-                        className="gap-2 bg-green-600 hover:bg-green-700 w-full sm:w-auto mt-2 sm:mt-0 h-11 font-bold shadow-lg" 
-                        disabled={!isAllCompleted}
-                        onClick={() => setIsWorkoutFinished(true)}
+                    <Button
+                        className="gap-2 bg-green-600 hover:bg-green-700 w-full sm:w-auto mt-2 sm:mt-0 h-11 font-bold shadow-lg"
+                        disabled={!isAllCompleted || isSubmitting}
+                        onClick={handleFinishSession}
                     >
-                        <CheckCircle2 className="h-4 w-4" /> {t('complete_session')}
+                        {isSubmitting ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                            <CheckCircle2 className="h-4 w-4" />
+                        )}
+                        {t('complete_session')}
                     </Button>
                 </div>
             </div>
 
             {isFocusModeOpen && (
-                <FocusMode 
-                    exercises={MOCK_EXERCISES} 
+                <FocusMode
+                    exercises={formattedExercises}
                     onClose={() => setIsFocusModeOpen(false)}
                     completedExercises={completedExercises}
                     onToggleExercise={toggleExercise}
                     onFinish={() => {
                         setIsFocusModeOpen(false);
-                        setIsWorkoutFinished(true);
+                        handleFinishSession();
                     }}
                 />
             )}
@@ -134,19 +185,19 @@ export default function StudentPlanPage() {
                     <CardHeader className="bg-slate-50 dark:bg-slate-900 border-b">
                         <div className="flex justify-between items-center">
                             <div>
-                                <CardTitle>Treino A: Membros Inferiores</CardTitle>
-                                <CardDescription>Foco em Quadríceps e Panturrilha</CardDescription>
+                                <CardTitle>{activeWorkout.workoutDays?.[0]?.name || "Rotina de Hoje"}</CardTitle>
+                                <CardDescription>{formattedExercises.length} exercícios planejados</CardDescription>
                             </div>
                             <div className="text-right">
                                 <span className="text-2xl font-bold text-blue-600">
-                                    {completedExercises.length}/{MOCK_EXERCISES.length}
+                                    {completedExercises.length}/{formattedExercises.length}
                                 </span>
-                                <p className="text-xs text-muted-foreground text-uppercase">Exercícios</p>
+                                <p className="text-xs text-muted-foreground text-uppercase font-bold">Progresso</p>
                             </div>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0">
-                        {MOCK_EXERCISES.map((ex, index) => (
+                        {formattedExercises.map((ex: any, index: number) => (
                             <div
                                 key={ex.id}
                                 className={`flex items-center gap-4 p-4 border-b last:border-0 transition-colors ${completedExercises.includes(ex.id) ? "bg-green-50/50 dark:bg-green-900/10" : ""
@@ -162,17 +213,17 @@ export default function StudentPlanPage() {
                                     <div className="md:col-span-2">
                                         <label
                                             htmlFor={`ex-${ex.id}`}
-                                            className={`font-bold text-lg cursor-pointer ${completedExercises.includes(ex.id) ? "line-through text-muted-foreground" : ""
+                                            className={`font-bold text-lg cursor-pointer ${completedExercises.includes(ex.id) ? "line-through text-muted-foreground opacity-50" : ""
                                                 }`}
                                         >
                                             {index + 1}. {ex.name}
                                         </label>
                                     </div>
-                                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-1 text-sm text-muted-foreground font-medium">
                                         <Dumbbell className="h-4 w-4" /> {ex.sets} x {ex.reps}
                                     </div>
-                                    <div className="flex items-center gap-1 text-sm font-medium text-blue-600">
-                                        <Clock className="h-4 w-4" /> {ex.weight}
+                                    <div className="flex items-center gap-1 text-sm font-bold text-blue-600">
+                                        <Dumbbell className="h-4 w-4" /> {ex.weight ? `${ex.weight}kg` : "Carga livre"}
                                     </div>
                                 </div>
                             </div>
@@ -183,3 +234,4 @@ export default function StudentPlanPage() {
         </div>
     );
 }
+

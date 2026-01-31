@@ -1,39 +1,109 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7115/api";
+import { toast } from "sonner";
 
-async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+export interface ApiError {
+    message: string;
+    status?: number;
+    errors?: Record<string, string[]>;
+}
 
-    const headers = {
-        'Content-Type': 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        ...options.headers,
-    };
+class ApiClient {
+    private baseURL: string;
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        ...options,
-        headers,
-    });
+    constructor(baseURL: string = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7115/api") {
+        this.baseURL = baseURL;
+    }
 
-    if (response.status === 401) {
-        // Tratar expiração de token ou redirecionar para login
-        if (typeof window !== 'undefined') {
-            localStorage.removeItem('accessToken');
-            // window.location.href = '/login';
+    private async handleResponse(response: Response) {
+        if (!response.ok) {
+            let apiError: ApiError;
+            try {
+                const errorData = await response.json();
+                apiError = {
+                    message: errorData.detail || errorData.message || `Erro ${response.status}`,
+                    status: response.status,
+                    errors: errorData.errors
+                };
+            } catch {
+                apiError = {
+                    message: `Erro de servidor (${response.status})`,
+                    status: response.status
+                };
+            }
+
+            // Show toast for errors (except 401 which is handled by middleware)
+            if (response.status !== 401) {
+                toast.error(apiError.message);
+            }
+
+            throw apiError;
+        }
+        return response;
+    }
+
+    private getHeaders(): HeadersInit {
+        const headers: HeadersInit = {
+            "Content-Type": "application/json",
+        };
+
+        if (typeof window !== "undefined") {
+            const token = document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("accessToken="))
+                ?.split("=")[1];
+
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+            }
+        }
+
+        return headers;
+    }
+
+    private async safeFetch(url: string, options: RequestInit): Promise<Response> {
+        try {
+            const response = await fetch(url, options);
+            return await this.handleResponse(response);
+        } catch (error: any) {
+            if (error.status) throw error; // Already handled by handleResponse
+
+            const networkError: ApiError = {
+                message: "Não foi possível conectar ao servidor. Verifique sua conexão.",
+                status: 503
+            };
+            toast.error(networkError.message);
+            throw networkError;
         }
     }
 
-    return response;
+    async get(endpoint: string): Promise<Response> {
+        return this.safeFetch(`${this.baseURL}${endpoint}`, {
+            method: "GET",
+            headers: this.getHeaders(),
+        });
+    }
+
+    async post(endpoint: string, data?: any): Promise<Response> {
+        return this.safeFetch(`${this.baseURL}${endpoint}`, {
+            method: "POST",
+            headers: this.getHeaders(),
+            body: data ? JSON.stringify(data) : undefined,
+        });
+    }
+
+    async put(endpoint: string, data?: any): Promise<Response> {
+        return this.safeFetch(`${this.baseURL}${endpoint}`, {
+            method: "PUT",
+            headers: this.getHeaders(),
+            body: data ? JSON.stringify(data) : undefined,
+        });
+    }
+
+    async delete(endpoint: string): Promise<Response> {
+        return this.safeFetch(`${this.baseURL}${endpoint}`, {
+            method: "DELETE",
+            headers: this.getHeaders(),
+        });
+    }
 }
 
-export const api = {
-    get: (endpoint: string) => fetchWithAuth(endpoint, { method: 'GET' }),
-    post: (endpoint: string, data: any) => fetchWithAuth(endpoint, {
-        method: 'POST',
-        body: JSON.stringify(data),
-    }),
-    put: (endpoint: string, data: any) => fetchWithAuth(endpoint, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-    }),
-    delete: (endpoint: string) => fetchWithAuth(endpoint, { method: 'DELETE' }),
-};
+export const api = new ApiClient();

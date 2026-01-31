@@ -3,9 +3,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
 import "./globals.css";
 // Import translations directly or fetch them
 import ptMessages from '@/messages/pt.json';
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +31,10 @@ export default async function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
+                        <AuthProvider>
+                            {children}
+                        </AuthProvider>
+                        <Toaster position="top-right" richColors />
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

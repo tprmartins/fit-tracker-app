@@ -8,6 +8,8 @@ import { Dumbbell, LayoutDashboard, Users, Calendar, LogOut, User, Menu } from "
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/mode-toggle";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     Sheet,
     SheetContent,
@@ -17,7 +19,18 @@ import {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const t = useTranslations('Dashboard');
-    const isPersonal = pathname?.includes("/personal");
+    const { user, signOut } = useAuth();
+    // Fallback logic if user role isn't loaded yet? 
+    // Actually AuthContext loads fast from cookies. 
+    // But isPersonal checks pathname mainly.
+    const isPersonal = user?.role === 4;
+    const isAdmin = user?.role === 1;
+
+    const adminLinks = [
+        { href: "/admin", label: t('sidebar.dashboard'), icon: LayoutDashboard },
+        { href: "/admin/users", label: t('sidebar.users'), icon: Users },
+        { href: "/admin/settings", label: t('sidebar.settings'), icon: Calendar },
+    ];
 
     const personalLinks = [
         { href: "/personal", label: t('sidebar.dashboard'), icon: LayoutDashboard },
@@ -31,7 +44,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { href: "/student/progress", label: t('sidebar.progress'), icon: Dumbbell },
     ];
 
-    const links = isPersonal ? personalLinks : studentLinks;
+    let links = studentLinks;
+    if (isAdmin) links = adminLinks;
+    else if (isPersonal) links = personalLinks;
 
     const SidebarContent = () => (
         <div className="flex flex-col h-full bg-slate-950 text-white pt-4 pb-6 px-4">
@@ -45,25 +60,35 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
             </div>
 
-            <nav className="flex-1 space-y-1">
+            <nav className="flex-1 space-y-2 mt-4">
                 {links.map((link) => {
                     const Icon = link.icon;
-                    // Fix: Exact match for root links, prefix match for sub-pages
-                    const isActive = link.href === "/personal" || link.href === "/student"
+                    const isActive = link.href === "/personal" || link.href === "/student" || link.href === "/admin"
                         ? pathname === link.href
                         : pathname?.startsWith(link.href);
                     return (
-                        <Link key={link.href} href={link.href}>
-                            <span className={cn(
-                                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden",
-                                isActive
-                                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 font-medium translate-x-1"
-                                    : "text-slate-400 hover:bg-slate-800/50 hover:text-white hover:translate-x-1"
-                            )}>
+                        <Link key={link.href} href={link.href} className="block">
+                            <motion.span
+                                whileHover={{ x: 4 }}
+                                whileTap={{ scale: 0.98 }}
+                                className={cn(
+                                    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden",
+                                    isActive
+                                        ? "bg-white/10 text-white shadow-xl shadow-black/20 font-semibold"
+                                        : "text-slate-400 hover:text-white"
+                                )}
+                            >
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="sidebar-active"
+                                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 -z-10"
+                                        initial={false}
+                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                    />
+                                )}
                                 <Icon className={cn("w-5 h-5 transition-transform group-hover:scale-110 duration-300", isActive ? "text-white" : "text-slate-500 group-hover:text-blue-400")} />
                                 <span className="relative z-10">{link.label}</span>
-                                {isActive && <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />}
-                            </span>
+                            </motion.span>
                         </Link>
                     )
                 })}
@@ -76,12 +101,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         {t('sidebar.profile')}
                     </button>
                 </Link>
-                <Link href="/login">
-                    <button className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all duration-200 group">
-                        <LogOut className="w-5 h-5 group-hover:text-red-400 transition-colors" />
-                        {t('sidebar.sign_out')}
-                    </button>
-                </Link>
+                <button
+                    onClick={signOut}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all duration-200 group"
+                >
+                    <LogOut className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+                    {t('sidebar.sign_out')}
+                </button>
             </div>
         </div>
     );
@@ -119,8 +145,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <ModeToggle />
                         <div className="flex items-center gap-3 border-l border-slate-200 dark:border-slate-800 pl-4">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">User Name</p>
-                                <p className="text-xs text-slate-500">{isPersonal ? t('header.personal_trainer') : t('header.student')}</p>
+                                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{user?.name || "Usuário"}</p>
+                                <p className="text-xs text-slate-500">
+                                    {isAdmin ? "Administrador" : (isPersonal ? t('header.personal_trainer') : t('header.student'))}
+                                </p>
                             </div>
                             <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 p-[2px]">
                                 <div className="h-full w-full rounded-full bg-white dark:bg-slate-950 flex items-center justify-center">
@@ -131,9 +159,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
                 </header>
 
-                <div className="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full animate-in fade-in duration-500 slide-in-from-bottom-4">
+                <motion.div
+                    key={pathname}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full"
+                >
                     {children}
-                </div>
+                </motion.div>
             </main>
         </div>
     );
