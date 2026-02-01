@@ -133,8 +133,8 @@ export default function PersonalDashboardPage() {
                             {activities.map((activity) => (
                                 <div key={activity.id} className="flex items-center group relative pl-4 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-transparent hover:before:bg-blue-500 before:rounded-full before:transition-all">
                                     <div className={`h-10 w-10 rounded-xl flex items-center justify-center border transition-all ${activity.type === 'StudentInvited' ? 'bg-blue-50 border-blue-100 text-blue-600 group-hover:bg-blue-100' :
-                                            activity.type === 'WorkoutCreated' ? 'bg-indigo-50 border-indigo-100 text-indigo-600 group-hover:bg-indigo-100' :
-                                                'bg-purple-50 border-purple-100 text-purple-600 group-hover:bg-purple-100'
+                                        activity.type === 'WorkoutCreated' ? 'bg-indigo-50 border-indigo-100 text-indigo-600 group-hover:bg-indigo-100' :
+                                            'bg-purple-50 border-purple-100 text-purple-600 group-hover:bg-purple-100'
                                         }`}>
                                         {activity.type === 'StudentInvited' ? <UserPlus className="h-5 w-5" /> :
                                             activity.type === 'WorkoutCreated' ? <Dumbbell className="h-5 w-5" /> :
@@ -145,7 +145,7 @@ export default function PersonalDashboardPage() {
                                             {activity.userName === 'Personal' ? 'Você' : activity.userName}
                                         </p>
                                         <p className="text-sm text-muted-foreground">
-                                            {t(`recent_activity.${activity.description}`, { name: activity.targetName })}
+                                            {t(`recent_activity.${activity.description}`, { name: activity.targetName ?? '' })}
                                         </p>
                                     </div>
                                     <div className="ml-auto text-xs font-semibold text-slate-400 bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 rounded-full border border-slate-100 dark:border-slate-800">
