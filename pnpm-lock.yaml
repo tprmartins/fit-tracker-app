@@ -139,8 +139,17 @@ importers:
       '@parcel/watcher':
         specifier: ^2.5.6
         version: 2.5.6
+      '@tailwindcss/oxide-linux-x64-gnu':
+        specifier: 4.1.18
+        version: 4.1.18
+      '@tailwindcss/oxide-linux-x64-musl':
+        specifier: 4.1.18
+        version: 4.1.18
       lightningcss-linux-x64-gnu:
-        specifier: ^1.28.2
+        specifier: 1.30.2
+        version: 1.30.2
+      lightningcss-linux-x64-musl:
+        specifier: 1.30.2
         version: 1.30.2
 
 packages:
